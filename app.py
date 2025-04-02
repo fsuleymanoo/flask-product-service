@@ -57,7 +57,21 @@ def update_product(sku):
     if product_update:
         new_product = request.json
         product_update.update(new_product)
-        return jsonify({"status": "product successfullu updated", "products": products})
+        return jsonify({"status": "product successfully updated", "products": products})
+
+    return jsonify({"error": "Product not found"})
+
+
+@app.route("/api/products/<string:sku>", methods=["DELETE"])
+def delete_product(sku):
+    product_delete = None
+    for product in products:
+        if sku == product.get("sku"):
+            product_delete = product
+
+    if product_delete:
+       products.remove(product_delete)
+       return jsonify({"status": "product successfully deleted", "products": products})
 
     return jsonify({"error": "Product not found"})
 
